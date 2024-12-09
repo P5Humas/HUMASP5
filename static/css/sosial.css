@@ -1,0 +1,104 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+.hero-section {
+  background-image: url("../images/beranda/banner.svg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-selengkapnya {
+  background-color: #8b5cf6;
+  transition: all 0.3s ease;
+}
+
+.btn-selengkapnya:hover {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+}
+
+/* Animation industri */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scroll-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.scroll-content {
+  display: inline-block;
+  animation: scroll 20s linear infinite;
+}
+
+.counter {
+  transition: all 0.3s ease;
+}
+
+.stats-section {
+  background-color: #7c3aed;
+}
+
+/* galeri */
+.gallery-item.hidden {
+  display: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 50;
+}
+
+.modal.active {
+  display: flex;
+}
+
+/* CSS untuk animasi scroll */
+#scrollToTop {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+#scrollToTop.visible {
+  opacity: 1;
+}
+/* CSS untuk scroll kanan*/
+::-webkit-scrollbar {
+  width: 12px; /* Lebar scrollbar */
+}
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Warna track scrollbar */
+  border-radius: 10px; /* Rounded track scrollbar */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #7443e1; /* Warna scrollbar */
+  border-radius: 10px; /* Rounded scrollbar */
+}

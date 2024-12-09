@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="icon" href="../../static/images/icon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body class="bg-gray-100">
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100">
+      <!-- Sidebar -->
+      <div
+        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+        class="bg-white text-black-900 shadow-md w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out md:flex md:flex-col md:justify-between overflow-y-auto"
+      >
+        <div>
+          <h2 class="text-2xl font-bold text-center">
+            HUMAS
+            <button
+              @click="sidebarOpen = false"
+              class="text-white md:hidden ml-2 absolute top-4 right-4"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </h2>
+          <!-- Navigation -->
+          <nav class="mt-10">
+            <!-- Dashboard -->
+            <div
+              class="flex mb-2 text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
+            >
+              <a
+                class="block py-2.5 px-2 rounded flex items-center gap-2"
+                href="{{ url_for('admin_dashboard') }}""
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                  />
+                </svg>
+                Dashboard
+              </a>
+            </div>
+            <!-- end -->
+            <div class="h-px my-2 bg-gray-200"></div>
+            <!-- General -->
+            <div
+              class="flex mb-4 items-center transition duration-200 rounded-lg bg-[#7443E1] hover:bg-[#7c3aed] text-white border-none"
+            >
+              <a
+                class="block py-2.5 px-2 rounded flex items-center gap-2"
+                href="{{ url_for('general_dashboard') }}""
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+                  />
+                </svg>
+
+                General
+              </a>
+            </div>
+            <!-- end -->
+            <div class="h-px my-2 bg-gray-200"></div>
+            <!-- chart1 -->
+            <div
+              class="flex mb-2 text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
+            >
+              <a
+                class="block py-2.5 px-2 rounded flex items-center gap-2"
+                href="chart1.html"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
+                  />
+                </svg>
+
+                Chart Humas
+              </a>
+            </div>
+            <!-- end -->
+            <!-- chart2 -->
+            <div
+              class="flex mb-2 text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
+            >
+              <a
+                class="block py-2.5 px-2 rounded flex items-center gap-2"
+                href="chart2.html"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                  />
+                </svg>
+                Chart BKK
+              </a>
+            </div>
+            <!-- end -->
+            <div class="h-px my-2 bg-gray-200"></div>
+            <!-- sosial -->
+            <div
+              class="flex mb-2 text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
+            >
+              <a
+                class="block py-2.5 px-2 rounded flex items-center gap-2"
+                href="{{ url_for('sosial_dashboard') }}""
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                Sosial
+              </a>
+            </div>
+            <!-- end -->
+          </nav>
+          <!-- End Navigation -->
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <!-- Content -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top bar -->
+        <header class="bg-white shadow-md">
+          <div
+            class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center"
+          >
+            <button
+              @click="sidebarOpen = !sidebarOpen"
+              class="text-gray-500 focus:outline-none focus:text-gray-700 md:hidden"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+            </button>
+            <h1 class="text-2xl font-semibold text-gray-800">General</h1>
+            <div class="flex items-center">
+              <span class="text-gray-600 mr-4"
+                >Selamat Datang, <span>Admin</span></span
+              >
+              <a class="text-[#7443E1]" href="">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+          <div class="container mx-auto px-6 py-8">
+            <!-- Cards -->
+            <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+              <!-- Stat cards -->
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF] rounded-full">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+                    ></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Siswa</p>
+                  <p class="text-lg font-semibold text-gray-700">12,345</p>
+                </div>
+              </div>
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF]rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Alumni</p>
+                  <p class="text-lg font-semibold text-gray-700">1,234</p>
+                </div>
+              </div>
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF] rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Guru</p>
+                  <p class="text-lg font-semibold text-gray-700">345</p>
+                </div>
+              </div>
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF] rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Industri</p>
+                  <p class="text-lg font-semibold text-gray-700">15</p>
+                </div>
+              </div>
+              <!-- End Card -->
+            </div>
+            <!-- End Card -->
+            <!-- FORM -->
+            <!-- FORM1 -->
+           
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+              <form id="adminForm" action="/api/galery" method="POST" enctype="multipart/form-data">
+                  <div class="mb-4">
+                      <label for="icon" class="block text-gray-700 font-bold mb-2">Tambah foto melalui file</label>
+                      <input
+                          type="file"
+                          id="icon"
+                          name="icon"
+                          placeholder="Masukkan file mu"
+                          class="shadow appearance-none border rounded mb-2 w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                      <label for="category" class="block text-gray-700 font-bold mb-2">Kategori:</label>
+                      <input
+                          type="text"
+                          name="category"
+                          placeholder="Tambah Kategori Disini"
+                          id="category"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                  </div>
+                  <div class="mb-4">
+                      <button
+                          type="submit"
+                          class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      >
+                          Tambah
+                      </button>
+                  </div>
+              </form>
+          </div>
+          
+            <!-- END FORM -->
+            <!-- FORM2 -->
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+              <form id="adminForm" method="POST" action="/update">
+                <div class="mb-4">
+                  <label for="category" class="block text-gray-700 font-bold mb-2">Pilih Kategori:</label>
+                  <select id="category" name="category" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="murid">Siswa</option>
+                    <option value="alumni">Alumni</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label for="quantity" class="block text-gray-700 font-bold mb-2">Jumlah:</label>
+                  <input type="number" min="0" id="quantity" name="jumlah" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                  <label for="status" class="block text-gray-700 font-bold mb-2">Status:</label>
+                  <input type="text" id="status" name="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                  <label for="bulan" class="block text-gray-700 font-bold mb-2">Bulan:</label>
+                  <input type="text" id="bulan" name="bulan" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                </div>
+                <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Update</button>
+              </form>
+              
+            </div>
+            <!-- END FORM -->
+            <!-- FORM3 -->
+            <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+              <form id="adminForm">
+                <div class="mb-4">
+                  <label
+                    for="category"
+                    class="block text-gray-700 font-bold mb-2"
+                    >Pilih Kategori:</label
+                  >
+                  <select
+                    id="category"
+                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="jumlah_siswa">Siswa</option>
+                    <option value="jumlah_alumni">Alumni</option>
+                    <option value="jumlah_industri">Industri</option>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+            <!-- END FORM -->
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../../static/js/script.js"></script>
+    <script>
+      new Vue({ el: "#app", data: { sidebarOpen: false } });
+    </script>
+  </body>
+</html>

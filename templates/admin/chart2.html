@@ -52,7 +52,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="dashboard.html"
+                href="{{ url_for('admin_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="general.html"
+                href="{{ url_for('general_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart1.html"
+                href="{{ url_for('chart1_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +134,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href=""
+                href="{{ url_for('chart2_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="sosial.html"
+                href="{{ url_for('sosial_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +253,7 @@
                   Chart 3
                 </div>
                 <div class="text-black p-6 rounded-lg shadow-lg" id="Chart4">
-                  Chart 4
+                  Lowongan
                 </div>
               </div>
             </div>
@@ -262,7 +262,7 @@
               <!--Data Kerja -->
               <div class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-xl font-semibold mb-4">STATUS</h2>
-                <form id="StatusForm" class="space-y-4">
+                <form id="StatusForm" class="space-y-4" action="/updatealumni" method="post">
                   <div>
                     <label
                       for="Status"
@@ -274,8 +274,8 @@
                       name="Status"
                       class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     >
-                      <option value="">Langsung Kerja</option>
-                      <option value="">Belum Kerja</option>
+                      <option value="kerja">Langsung Kerja</option>
+                      <option value="belum-kerja">Belum Kerja</option>
                     </select>
                   </div>
                   <div>
@@ -302,9 +302,9 @@
                     >
                     <input
                       type="number"
-                      id="JumlahCount"
+                      id="Jumlah"
                       placeholder="Tambah Jumlah Disini"
-                      name="JumlahCount"
+                      name="Jumlah"
                       min="0"
                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       required
@@ -322,7 +322,7 @@
               <!-- Jumlah Lowongan -->
               <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-xl font-semibold mb-4">LOWONGAN</h2>
-                <form id="studentCountForm" class="space-y-4">
+                <form id="studentCountForm" class="space-y-4" action="/insertlowongan" method="post">
                   <div>
                     <label
                       for="pklMonth"
@@ -334,18 +334,18 @@
                       name="pklMonth"
                       class="mt-1 shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     >
-                      <option value="0">Januari</option>
-                      <option value="1">Februari</option>
-                      <option value="2">Maret</option>
-                      <option value="3">April</option>
-                      <option value="4">Mei</option>
-                      <option value="5">Juni</option>
-                      <option value="6">Juli</option>
-                      <option value="7">Augustus</option>
-                      <option value="8">September</option>
-                      <option value="9">October</option>
-                      <option value="10">November</option>
-                      <option value="11">Desember</option>
+                      <option value="Jan">Januari</option>
+                      <option value="Feb">Februari</option>
+                      <option value="Mar">Maret</option>
+                      <option value="Apr">April</option>
+                      <option value="Mei">Mei</option>
+                      <option value="Jun">Juni</option>
+                      <option value="Jul">Juli</option>
+                      <option value="Agu">Agustus</option>
+                      <option value="Sep">September</option>
+                      <option value="Okt">October</option>
+                      <option value="Nov">November</option>
+                      <option value="Des">Desember</option>
                     </select>
                   </div>
                   <div>
@@ -374,119 +374,61 @@
             </div>
             <!-- End -->
             <br>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+              <h2 class="text-xl font-semibold mb-4">LOWONGAN</h2>
+              <form id="studentCountForm" class="space-y-4" action="/updatelowongan" method="post">
+                <div>
+                  <label
+                    for="pklMonth"
+                    class="block text-sm font-medium text-gray-700"
+                    >Bulan</label
+                  >
+                  <select
+                    id="pklMonth"
+                    name="pklMonth"
+                    class="mt-1 shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="Jan">Januari</option>
+                    <option value="Feb">Februari</option>
+                    <option value="Mar">Maret</option>
+                    <option value="Apr">April</option>
+                    <option value="Mei">Mei</option>
+                    <option value="Jun">Juni</option>
+                    <option value="Jul">Juli</option>
+                    <option value="Agu">Agustus</option>
+                    <option value="Sep">September</option>
+                    <option value="Okt">October</option>
+                    <option value="Nov">November</option>
+                    <option value="Des">Desember</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    for="studentCount"
+                    class="block text-gray-700 font-bold mb-2"
+                    >Jumlah</label
+                  >
+                  <input
+                    type="number"
+                    id="studentCount"
+                    name="studentCount"
+                    min="0"
+                    class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Update
+                </button>
+              </form>
+            </div>
+          </div>
+          <br>
             <!-- Form Edit -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!--Data Kerja Edit -->
-              <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold mb-4">STATUS</h2>
-                <form id="StatusForm" class="space-y-4">
-                  <div>
-                    <label
-                      for="Status"
-                      class="block text-gray-700 font-bold mb-2"
-                      >Status</label
-                    >
-                    <select
-                      id="KerjaStatus"
-                      name="Status"
-                      class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                      <option value="">Langsung Kerja</option>
-                      <option value="">Belum Kerja</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      for="Year"
-                      class="block text-sm font-medium text-gray-700"
-                      >Tahun</label
-                    >
-                    <input
-                      type="number"
-                      id="YearCount"
-                      placeholder="Tahun "
-                      name="YearCount"
-                      min="0"
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="Count"
-                      class="block text-sm font-medium text-gray-700"
-                      >Jumlah</label
-                    >
-                    <input
-                      type="number"
-                      id="JumlahCount"
-                      placeholder="Tambah Jumlah Disini"
-                      name="JumlahCount"
-                      min="0"
-                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Update
-                  </button>
-                </form>
-              </div>
-
-              <!-- Jumlah Lowongan Edit -->
-              <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">LOWONGAN</h2>
-                <form id="studentCountForm" class="space-y-4">
-                  <div>
-                    <label
-                      for="pklMonth"
-                      class="block text-sm font-medium text-gray-700"
-                      >Bulan</label
-                    >
-                    <select
-                      id="pklMonth"
-                      name="pklMonth"
-                      class="mt-1 shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                      <option value="0">Januari</option>
-                      <option value="1">Februari</option>
-                      <option value="2">Maret</option>
-                      <option value="3">April</option>
-                      <option value="4">Mei</option>
-                      <option value="5">Juni</option>
-                      <option value="6">Juli</option>
-                      <option value="7">Augustus</option>
-                      <option value="8">September</option>
-                      <option value="9">October</option>
-                      <option value="10">November</option>
-                      <option value="11">Desember</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      for="studentCount"
-                      class="block text-gray-700 font-bold mb-2"
-                      >Jumlah</label
-                    >
-                    <input
-                      type="number"
-                      id="studentCount"
-                      name="studentCount"
-                      min="0"
-                      class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Update
-                  </button>
-                </form>
+            
               </div>
             </div>
           </div>
@@ -545,53 +487,47 @@
             })
             .catch(error => console.error('Error:', error));
       // Chart 4
-      var options = {
-        series: [
-          {
-            name: "Desktops",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-          },
-        ],
-        chart: {
-          height: 350,
-          type: "line",
-          zoom: {
-            enabled: false,
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "straight",
-        },
-        title: {
-          text: "Product Trends by Month",
-          align: "left",
-        },
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5,
-          },
-        },
-        xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-          ],
-        },
-      };
+      fetch('/api/lowongan')
+            .then(response => response.json())
+            .then(data => {
+                // Ensure the data is sorted correctly by month
+                const monthOrder = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                const sortedData = monthOrder.map(month => data[month]);
 
-      var chart = new ApexCharts(document.querySelector("#Chart4"), options);
-      chart.render();
+                var options = {
+                    series: [{
+                        name: "Lowongan",
+                        data: sortedData
+                    }],
+                    chart: {
+                        height: 350,
+                        type: 'line',
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'straight'
+                    },
+                    
+                    grid: {
+                        row: {
+                            colors: ['#f3f3f3', 'transparent'],
+                            opacity: 0.5
+                        }
+                    },
+                    xaxis: {
+                        categories: monthOrder
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#Chart4"), options);
+                chart.render();
+            })
+            .catch(error => console.error('Error fetching data:', error));
     </script>
   </body>
 </html>

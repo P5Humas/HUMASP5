@@ -57,7 +57,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="dashboard.html"
+                href="{{ url_for('admin_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="general.html"
+                href="{{ url_for('general_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href=""
+                href="{{ url_for('chart1_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart2.html"
+                href="{{ url_for('chart2_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="sosial.html"
+                href="{{ url_for('sosial_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -253,11 +253,11 @@
             <!-- Chart  -->
             <div class="max-w-[74rem] mx-auto py-1 px-16">
               <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div class="text-black p-6 rounded-lg shadow-md" id="Chart1">
-                  Chart 1
+                <div class="text-black p-6 rounded-lg shadow-lg" id="Chart1">
+                  Siwa PKL dan Belum PKL
                 </div>
-                <div class="text-black p-6 rounded-lg shadow-md" id="Chart2">
-                  Chart 2
+                <div class="text-black p-6 rounded-lg shadow-lg" id="Chart2">
+                  Data Siswa
                 </div>
               </div>
               <br />
@@ -266,7 +266,7 @@
                 <!--Status Form -->
                 <div class="bg-white rounded-lg shadow-md p-6">
                   <h2 class="text-xl font-semibold mb-4">STATUS</h2>
-                  <form id="pklStatusForm" class="space-y-4">
+                  <form id="pklStatusForm" class="space-y-4" action="/updatemurid" method="POST">
                     <div>
                       <label
                         for="pklStatus"
@@ -278,8 +278,8 @@
                         name="pklStatus"
                         class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       >
-                        <option value="PKL">PKL</option>
-                        <option value="Belum PKL">Belum PKL</option>
+                        <option value="pkl">PKL</option>
+                        <option value="belum-pkl">Belum PKL</option>
                       </select>
                     </div>
                     <div>
@@ -293,18 +293,18 @@
                         name="pklMonth"
                         class="mt-1 shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       >
-                        <option value="0">Januari</option>
-                        <option value="1">Februari</option>
-                        <option value="2">Maret</option>
-                        <option value="3">April</option>
-                        <option value="4">Mei</option>
-                        <option value="5">Juni</option>
-                        <option value="6">Juli</option>
-                        <option value="7">Augustus</option>
-                        <option value="8">September</option>
-                        <option value="9">October</option>
-                        <option value="10">November</option>
-                        <option value="11">Desember</option>
+                        <option value="Jan">Januari</option>
+                        <option value="Feb">Februari</option>
+                        <option value="Mar">Maret</option>
+                        <option value="Apr">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Jun">Juni</option>
+                        <option value="Jul">Juli</option>
+                        <option value="Agu">Augustus</option>
+                        <option value="Sep">September</option>
+                        <option value="Okt">October</option>
+                        <option value="Nov">November</option>
+                        <option value="Des">Desember</option>
                       </select>
                     </div>
                     <div>
@@ -332,178 +332,111 @@
                   </form>
                 </div>
 
-                <!-- Jumalh Form -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h2 class="text-xl font-semibold mb-4">JUMLAH</h2>
-                  <form id="studentCountForm" class="space-y-4">
-                    <div>
-                      <label
-                        for="studentCategory"
-                        class="block text-gray-700 font-bold mb-2"
-                        >Kategori</label
-                      >
-                      <select
-                        id="studentCategory"
-                        name="studentCategory"
-                        class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="Total Siswa">Total Siswa</option>
-                        <option value="Pra-PKL">Pra-PKL</option>
-                        <option value="PKL">PKL</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        for="studentCount"
-                        class="block text-gray-700 font-bold mb-2"
-                        >Jumlah</label
-                      >
-                      <input
-                        type="number"
-                        id="studentCount"
-                        name="studentCount"
-                        min="0"
-                        class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Kirim
-                    </button>
-                  </form>
-                </div>
-              </div>
-              <!-- End -->
-            </div>
-            <!-- End -->
-            <br />
-            <!-- Form Edit -->
-            <div class="max-w-[74rem] mx-auto py-1 px-16">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!--Status Form -->
-                <div class="bg-white rounded-lg shadow-md p-6">
-                  <h2 class="text-xl font-semibold mb-4">STATUS</h2>
-                  <form id="pklStatusForm" class="space-y-4">
-                    <div>
-                      <label
-                        for="pklStatus"
-                        class="block text-gray-700 font-bold mb-2"
-                        >Status</label
-                      >
-                      <select
-                        id="pklStatus"
-                        name="pklStatus"
-                        class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="PKL">PKL</option>
-                        <option value="Belum PKL">Belum PKL</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        for="pklMonth"
-                        class="block text-sm font-medium text-gray-700"
-                        >Bulan</label
-                      >
-                      <select
-                        id="pklMonth"
-                        name="pklMonth"
-                        class="mt-1 shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="0">Januari</option>
-                        <option value="1">Februari</option>
-                        <option value="2">Maret</option>
-                        <option value="3">April</option>
-                        <option value="4">Mei</option>
-                        <option value="5">Juni</option>
-                        <option value="6">Juli</option>
-                        <option value="7">Augustus</option>
-                        <option value="8">September</option>
-                        <option value="9">October</option>
-                        <option value="10">November</option>
-                        <option value="11">Desember</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        for="pklCount"
-                        class="block text-sm font-medium text-gray-700"
-                        >Jumlah</label
-                      >
-                      <input
-                        type="number"
-                        id="pklCount"
-                        placeholder="Tambah Jumlah Disini"
-                        name="pklCount"
-                        min="0"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Update
-                    </button>
-                  </form>
-                </div>
-
-                <!-- Jumalh Form -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                  <h2 class="text-xl font-semibold mb-4">JUMLAH</h2>
-                  <form id="studentCountForm" class="space-y-4">
-                    <div>
-                      <label
-                        for="studentCategory"
-                        class="block text-gray-700 font-bold mb-2"
-                        >Kategori</label
-                      >
-                      <select
-                        id="studentCategory"
-                        name="studentCategory"
-                        class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="Total Siswa">Total Siswa</option>
-                        <option value="Pra-PKL">Pra-PKL</option>
-                        <option value="PKL">PKL</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        for="studentCount"
-                        class="block text-gray-700 font-bold mb-2"
-                        >Jumlah</label
-                      >
-                      <input
-                        type="number"
-                        id="studentCount"
-                        name="studentCount"
-                        min="0"
-                        class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Update
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
+               
             <!-- End -->
           </div>
         </main>
       </div>
     </div>
+    <script>
+      // Fetch data for Chart 1 (Jumlah Murid Per Bulan)
+      fetch('/api/chart1')
+  .then(response => response.json())
+  .then(chart1_data => {
+    console.log("Chart 1 Data:", chart1_data);
 
-    <script src="../../static/js/chart.js"></script>
+    // Pastikan data valid
+    if (Object.keys(chart1_data).length === 0) {
+      console.error("Data untuk Chart 1 tidak valid", chart1_data);
+      return;
+    }
+
+    // Urutan bulan yang diinginkan
+    const monthOrder = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+    // Mengurutkan data berdasarkan urutan bulan
+    const sortedData = monthOrder.reduce((acc, month) => {
+      if (chart1_data[month]) {
+        acc[month] = chart1_data[month];
+      } else {
+        // Jika bulan tidak ada di data, tambahkan nilai default
+        acc[month] = { pkl: 0, "belum-pkl": 0 };
+      }
+      return acc;
+    }, {});
+
+    console.log("Sorted Chart 1 Data:", sortedData);
+
+    // Siapkan data untuk chart
+    const pklData = [];
+    const belumPklData = [];
+    const categories = [];
+
+    for (const month of monthOrder) {
+      const data = sortedData[month];
+      pklData.push(data["pkl"]);
+      belumPklData.push(data["belum-pkl"]);
+      categories.push(month);
+    }
+
+    // Konfigurasi Chart 1
+    const options1 = {
+      chart: {
+        type: 'bar',
+        height: 350,
+      },
+      series: [
+        {
+          name: 'PKL',
+          data: pklData,
+        },
+        {
+          name: 'Belum PKL',
+          data: belumPklData,
+        },
+      ],
+      xaxis: {
+        categories: categories,
+      },
+      colors: ['#45138b', '#008ffb'],
+    };
+
+    // Render Chart 1
+    const chart1 = new ApexCharts(document.querySelector("#Chart1"), options1);
+    chart1.render();
+  })
+  .catch(error => console.error("Error fetching Chart 1 data:", error));
+
+        
+    
+      // Fetch data for Chart 2 (Jumlah Murid Per Status)
+      fetch('/api/chart2')
+        .then(response => response.json())
+        .then(chart2_data => {
+          console.log("Chart 2 Data:", chart2_data);
+    
+          // Konfigurasi Chart 2 (Donut Chart)
+          var options2 = {
+            chart: {
+              type: 'donut',
+              height: 250,
+            },
+            colors: ['#008ffb', '#feb019', '#ff4560'],
+            series: [
+              chart2_data["PKL"] || 0, 
+              chart2_data["Pra PKL"] || 0, 
+              chart2_data["Belum PKL"] || 0
+            ],
+            labels: ['PKL', 'Pra PKL', 'Belum PKL'],
+          };
+    
+          // Render Chart 2
+          var chart2 = new ApexCharts(document.querySelector("#Chart2"), options2);
+          chart2.render();
+        })
+        .catch(error => console.error("Error fetching Chart 2 data:", error));
+    </script>
+   
     <script>
       new Vue({ el: "#app", data: { sidebarOpen: false } });
     </script>

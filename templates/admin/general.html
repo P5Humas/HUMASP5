@@ -111,7 +111,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart1.html"
+                href="{{ url_for('chart1_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart2.html"
+                href="{{ url_for('chart2_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -394,29 +394,20 @@
             <!-- END FORM -->
             <!-- FORM3 -->
             <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-              <form id="adminForm">
+              <form id="adminForm" action="/delete" method="POST">
                 <div class="mb-4">
-                  <label
-                    for="category"
-                    class="block text-gray-700 font-bold mb-2"
-                    >Pilih Kategori:</label
-                  >
-                  <select
-                    id="category"
-                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    <option value="jumlah_siswa">Siswa</option>
-                    <option value="jumlah_alumni">Alumni</option>
-                    <option value="jumlah_industri">Industri</option>
-                  </select>
+                    <label for="category" class="block text-gray-700 font-bold mb-2">Pilih Kategori:</label>
+                    <select id="category" name="category" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="jumlah_siswa">Siswa</option>
+                        <option value="jumlah_alumni">Alumni</option>
+                    </select>
+                    <label for="status" class="block text-gray-700 font-bold mb-2">Status:</label>
+                    <input type="text" name="status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <label for="bulan" class="block text-gray-700 font-bold mb-2">Bulan:</label>
+                    <input type="text" name="bulan" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-                <button
-                  type="submit"
-                  class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                  Delete
-                </button>
-              </form>
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Delete</button>
+            </form>
             </div>
             <!-- END FORM -->
           </div>

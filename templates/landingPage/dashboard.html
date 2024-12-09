@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HumasP5</title>
+  <link rel="icon" href="../../static/images/icon.png" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .show {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+
+
+    img,
+    video {
+      object-fit: contain;
+
+    }
+
+
+    /* Animation industri */
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .scroll-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .scroll-content {
+      display: inline-block;
+      animation: scroll 20s linear infinite;
+    }
+
+    .counter {
+      transition: all 0.3s ease;
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <h1 class=" flex justify-center text-2xl font-bold text-black-900 mt-4">DASHBOARD <span class="ml-2 text-[#814BF9] ">HUMAS SMKN 04 MALANG</span></h1>
+    <!-- Main content -->
+    <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
+      <div class="container mx-auto px-6 pb-8 pt-5">
+        <div class="flex flex-wrap md:flex-nowrap gap-6">
+          <!-- Left Section: Cards and Charts -->
+          <div class=" space-y-8">
+            <!-- Cards Section -->
+            <div class="grid max-w-2xl gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
+              <!-- Stat Cards -->
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF] rounded-full">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z">
+                    </path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Siswa</p>
+                  <p class="text-lg font-semibold text-gray-700">12,345</p>
+                </div>
+              </div>
+              <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
+                <div class="p-3 mr-4 text-[#7443E1] bg-[#F2ECFF] rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="mb-2 text-sm font-medium text-gray-600">Guru</p>
+                  <p class="text-lg font-semibold text-gray-700">345</p>
+                </div>
+              </div>
+              <!-- End Stat Card -->
+            </div>
+            <!-- End Cards Section -->
+
+            <!-- Charts -->
+            <div class="grid max-w-2xl gap-6 mb-8 md:grid-cols-2">
+              <div class="text-black p-6 bg-white rounded-lg shadow-md" id="Chart1">
+                <h3 class="text-lg font-semibold text-gray-700">Siswa PKL dan Belum PKL</h3>
+              </div>
+              <div class="text-black p-6 bg-white rounded-lg shadow-md" id="Chart2">
+                <h3 class="text-lg mb-6 font-semibold text-gray-700">Data Siswa</h3>
+              </div>
+            </div>
+            <!-- End Charts -->
+          </div>
+
+          <!-- Right Section -->
+          <div class="w-full md:w-1/4 bg-white p-4 rounded-lg shadow-md">
+            <!-- Tambahkan konten di sini -->
+            <div id="ChartAlumni">
+              <h3 class="text-lg font-semibold text-gray-700">Data Alumni</h3>
+            </div>
+          </div>
+          <div class="w-full md:w-1/4 bg-white p-0 rounded-lg shadow-md overflow-hidden">
+            <div id="slideshow" class="w-full h-full relative">
+              <!-- Konten slideshow akan dimasukkan di sini oleh JavaScript -->
+            </div>
+          </div>
+        
+          
+        </div>
+        <section class="py-8 bg-white mt-12 rounded-lg shadow-md">
+          <div class="container mx-auto px-4">
+            <div class="scroll-container">
+              <div class="scroll-content flex items-center space-x-8">
+                <!-- Logos of Partners -->
+                <img src="../static/images/industri/industri01.png" alt="Partner 1" class="h-16" />
+                <img src="../static/images/industri/industri02.png" alt="Partner 2" class="h-16" />
+                <img src="../static/images/industri/industri03.png" alt="Partner 3" class="h-16" />
+                <img src="../static/images/industri/industri04.png" alt="Partner 4" class="h-16" />
+                <img src="../static/images/industri/industri05.png" alt="Partner 5" class="h-16" />
+                <img src="../static/images/industri/industri06.png" alt="Partner 6" class="h-16" />
+                <img src="../static/images/industri/industri07.png" alt="Partner 7" class="h-16" />
+                <img src="../static/images/industri/industri08.png" alt="Partner 8" class="h-16" />
+                <img src="../static/images/industri/industri09.png" alt="Partner 9" class="h-16" />
+                <img src="../static/images/industri/industri10.png" alt="Partner 10" class="h-16" />
+                <!-- Duplicate set for continuous scroll -->
+                <img src="../static/images/industri/industri01.png" alt="Partner 1" class="h-16" />
+                <img src="../static/images/industri/industri02.png" alt="Partner 2" class="h-16" />
+                <img src="../static/images/industri/industri03.png" alt="Partner 3" class="h-16" />
+                <img src="../static/images/industri/industri04.png" alt="Partner 4" class="h-16" />
+                <img src="../static/images/industri/industri05.png" alt="Partner 5" class="h-16" />
+                <img src="../static/images/industri/industri06.png" alt="Partner 6" class="h-16" />
+                <img src="../static/images/industri/industri07.png" alt="Partner 7" class="h-16" />
+                <img src="../static/images/industri/industri08.png" alt="Partner 8" class="h-16" />
+                <img src="../static/images/industri/industri09.png" alt="Partner 9" class="h-16" />
+                <img src="../static/images/industri/industri10.png" alt="Partner 10" class="h-16" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+  </div>
+  <script>
+    // Fetch data for Chart 1 (Jumlah Murid Per Bulan)
+    fetch('/api/chart1')
+      .then(response => response.json())
+      .then(chart1_data => {
+        console.log("Chart 1 Data:", chart1_data);
+
+        // Pastikan data valid
+        if (Object.keys(chart1_data).length === 0) {
+          console.error("Data untuk Chart 1 tidak valid", chart1_data);
+          return;
+        }
+
+        // Urutan bulan yang diinginkan
+        const monthOrder = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+        // Mengurutkan data berdasarkan urutan bulan
+        const sortedData = monthOrder.reduce((acc, month) => {
+          if (chart1_data[month]) {
+            acc[month] = chart1_data[month];
+          } else {
+            // Jika bulan tidak ada di data, tambahkan nilai default
+            acc[month] = { pkl: 0, "belum-pkl": 0 };
+          }
+          return acc;
+        }, {});
+
+        console.log("Sorted Chart 1 Data:", sortedData);
+
+        // Siapkan data untuk chart
+        const pklData = [];
+        const belumPklData = [];
+        const categories = [];
+
+        for (const month of monthOrder) {
+          const data = sortedData[month];
+          pklData.push(data["pkl"]);
+          belumPklData.push(data["belum-pkl"]);
+          categories.push(month);
+        }
+
+        // Konfigurasi Chart 1
+        const options1 = {
+          chart: {
+            type: 'bar',
+            height: '200px',
+          },
+          series: [
+            {
+              name: 'PKL',
+              data: pklData,
+            },
+            {
+              name: 'Belum PKL',
+              data: belumPklData,
+            },
+          ],
+          xaxis: {
+            categories: categories,
+          },
+          colors: ['#45138b', '#008ffb'],
+          dataLabels: {
+            enabled: false, // Menonaktifkan label data pada bar
+          },
+        };
+
+        // Render Chart 1
+        const chart1 = new ApexCharts(document.querySelector("#Chart1"), options1);
+        chart1.render();
+      })
+      .catch(error => console.error("Error fetching Chart 1 data:", error));
+
+
+
+    // Fetch data for Chart 2 (Jumlah Murid Per Status)
+    fetch('/api/chart2')
+      .then(response => response.json())
+      .then(chart2_data => {
+        console.log("Chart 2 Data:", chart2_data);
+
+        // Konfigurasi Chart 2 (Donut Chart)
+        var options2 = {
+          chart: {
+            type: 'donut',
+            width: 250,
+            height: 250,
+          },
+          colors: ['#008ffb', '#feb019', '#ff4560'],
+          dataLabels: {
+            enabled: false, // Menonaktifkan label data pada bar
+          },
+          series: [
+            chart2_data["PKL"] || 0,
+            chart2_data["Pra PKL"] || 0,
+            chart2_data["Belum PKL"] || 0
+          ],
+          labels: ['PKL', 'Pra PKL', 'Belum PKL'],
+
+        };
+
+        // Render Chart 2
+        var chart2 = new ApexCharts(document.querySelector("#Chart2"), options2);
+        chart2.render();
+      })
+      .catch(error => console.error("Error fetching Chart 2 data:", error));
+    // Chart 3
+    fetch('/api/aluni')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+
+        // Urutkan data berdasarkan tahun yang ada di data API
+        const sortedYears = Object.keys(data).sort((a, b) => b - a); // Mengurutkan tahun secara menurun
+
+        // Pisahkan data untuk chart
+        const kerjaData = sortedYears.map(year => data[year].kerja || 0);
+        const belumKerjaData = sortedYears.map(year => data[year]['belum-kerja'] || 0);
+        const years = sortedYears; // Tahun yang akan digunakan untuk sumbu X
+
+        var options = {
+          series: [
+            {
+              name: "Kerja",
+              data: kerjaData,
+            },
+            {
+              name: "Belum Kerja",
+              data: belumKerjaData,
+            },
+          ],
+          chart: {
+            height: '300px',
+            type: 'area',
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          stroke: {
+            curve: 'smooth',
+          },
+          xaxis: {
+            categories: years, // Menggunakan tahun sebagai kategori di sumbu X
+          },
+          tooltip: {
+            x: {
+              format: 'yyyy', // Format tooltip untuk tahun
+            },
+          },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#ChartAlumni"), options);
+        chart.render();
+      })
+      .catch(error => console.error('Error:', error));
+  </script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      fetch('/api/gallery')
+        .then(response => response.json())
+        .then(data => {
+          const slideshow = document.getElementById('slideshow');
+
+          data.forEach(item => {
+            if (item.category === 'foto') {
+              const img = document.createElement('img');
+              img.src = `../..${item.url}`;
+              img.alt = 'Deskripsi Gambar';
+              img.classList.add('slide', 'w-full', 'h-full', 'absolute', 'inset-0');
+              slideshow.appendChild(img);
+            } else if (item.category === 'video') {
+              const video = document.createElement('video');
+              video.classList.add('slide', 'w-full', 'h-full', 'absolute', 'inset-0');
+              video.muted = true;
+
+              const source = document.createElement('source');
+              source.src = `../..${item.url}`;
+              source.type = 'video/mp4';
+              video.appendChild(source);
+
+              slideshow.appendChild(video);
+            }
+          });
+
+          const slides = document.querySelectorAll('.slide');
+          let slideIndex = 0;
+          const displayDuration = 5000; // Duration in milliseconds
+
+          function showSlides() {
+            for (let i = 0; i < slides.length; i++) {
+              slides[i].classList.remove('show');
+              if (slides[i].tagName.toLowerCase() === 'video') {
+                slides[i].pause();
+                slides[i].currentTime = 0;
+              }
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+
+            slides[slideIndex - 1].classList.add('show');
+
+            if (slides[slideIndex - 1].tagName.toLowerCase() === 'video') {
+              slides[slideIndex - 1].play();
+            }
+
+            setTimeout(showSlides, displayDuration); // Change image/video every `displayDuration` milliseconds
+          }
+
+          showSlides();
+        })
+        .catch(error => console.error('Error fetching gallery data:', error));
+    });
+  </script>
+</body>
+
+</html>

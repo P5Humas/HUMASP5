@@ -246,6 +246,9 @@ def sosial():
 @app.route('/admin/dashboard')
 def admin_dashboard():
     return render_template('admin/dashboard.html')
+@app.route('/landingPage/dashboard')
+def landing_dashboard():
+    return render_template('landingPage/dashboard.html')
 @app.route('/admin/general')
 def general_dashboard():
     return render_template('admin/general.html')

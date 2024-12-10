@@ -50,66 +50,51 @@
             data-aos-once="false"
             x-data="{ loginUsername: '', loginPassword: '', passwordPattern: /^(?=.*[A-Z])(?=.*W).+$/, showPassword: false }"
           >
-            <form
-              class="w-full divide-neutral-200 rounded-3xl bg-white shadow-2xl border p-8 lg:p-8"
-            >
-              <div class="flex justify-center items-center p-0">
-                <img src="images/icon.png" width="100" height="100" alt="" />
-              </div>
-              <div class="py-2 space-y-3">
-                <label for="login_Username" class="block text-sm text-gray-700"
-                  >Username</label
-                >
+          <form class="w-full divide-neutral-200 rounded-3xl bg-white shadow-2xl border p-8 lg:p-8" action="/loginproses" method="POST">
+            <div class="flex justify-center items-center p-0">
+                <img src="../static/images/icon.png" width="100" height="100" alt="" />
+            </div>
+            <div class="py-2 space-y-3">
+                <label for="login_Username" class="block text-sm text-gray-700">Username</label>
                 <input
-                  type="Username"
-                  id="login_Username"
-                  x-model="loginUsername"
-                  class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-[#7443E1] focus:font-medium focus:border-[#7443E1] focus:bg-white focus:outline-none focus:ring-[#7443E1] focus:ring-inset focus:ring-2 text-xs"
-                  placeholder="Masukkan Username"
-                  required=""
+                    type="text"
+                    name="username"
+                    id="login_Username"
+                    x-model="loginUsername"
+                    class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-[#7443E1] focus:font-medium focus:border-[#7443E1] focus:bg-white focus:outline-none focus:ring-[#7443E1] focus:ring-inset focus:ring-2 text-xs"
+                    placeholder="Masukkan Username"
+                    required
                 />
-                <p x-show="!loginUsername" class="text-red-500 text-xs mt-1">
-                  Username wajib diisi!
-                </p>
-              </div>
-              <div class="py-2 space-y-3">
-                <label for="login_sandi" class="block text-sm text-gray-700"
-                  >Kata Sandi</label
-                >
+            </div>
+            <div class="py-2 space-y-3">
+                <label for="login_sandi" class="block text-sm text-gray-700">Kata Sandi</label>
                 <div class="relative">
-                  <input
-                    :type="showPassword ? 'text' : 'password'"
-                    id="login_password"
-                    x-model="loginPassword"
-                    class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-[#7443E1] focus:font-medium focus:border-[#7443E1] focus:bg-white focus:outline-none focus:ring-[#7443E1] focus:ring-2 focus:ring-inset text-xs"
-                    placeholder="Masukkan Kata Sandi"
-                    required=""
-                    type="password"
-                  />
-                  <span
-                    class="absolute inset-y-0 right-0 flex items-center pr-4 text-xs text-gray-400 cursor-pointer"
-                    x-text="showPassword ? 'Sembunyikan' : 'Lihat'"
-                    @click="showPassword = !showPassword"
-                    >Lihat</span
-                  >
+                    <input
+                        :type="showPassword ? 'text' : 'password'"
+                        id="login_password"
+                        name="password" 
+                        x-model="loginPassword"
+                        class="block w-full h-12 px-4 py-3 placeholder-gray-500 bg-gray-100 border-0 rounded-lg appearance-none text-[#7443E1] focus:font-medium focus:border-[#7443E1] focus:bg-white focus:outline-none focus:ring-[#7443E1] focus:ring-2 focus:ring-inset text-xs"
+                        placeholder="Masukkan Kata Sandi"
+                        required
+                    />
+                    <span
+                        class="absolute inset-y-0 right-0 flex items-center pr-4 text-xs text-gray-400 cursor-pointer"
+                        x-text="showPassword ? 'Sembunyikan' : 'Lihat'"
+                        @click="showPassword = !showPassword"
+                    >Lihat</span>
                 </div>
-                <p
-                  x-show="loginPassword &amp;&amp; !passwordPattern.test(loginPassword)"
-                  class="text-red-500 mt-1 text-xs"
-                  style="display: none"
-                >
-                  Kata sandi tidak memenuhi persyaratan
-                </p>
-              </div>
-              <div class="mt-4">
+            </div>
+            <div class="mt-4">
                 <button
-                  type="submit"
-                  class="btn-selengkapnya rounded-full bg-[#7443E1] px-8 py-2 h-12 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#5E35B9] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full"
+                    type="submit"
+                    class="btn-selengkapnya rounded-full bg-[#7443E1] px-8 py-2 h-12 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#5E35B9] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full"
                 >
-                  Login
+                    Login
                 </button>
-              </div>
-            </form>
+            </div>
+        </form>
+        
           </div>
           <!--  Ends component -->
           <!-- Starts links to tutorial -->

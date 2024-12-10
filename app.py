@@ -1,12 +1,14 @@
 import sqlite3
-from flask import Flask, render_template, g, jsonify, request, send_from_directory, redirect, url_for
+from flask import Flask, render_template, g, jsonify, request, send_from_directory, redirect, url_for, session
 import json  # Untuk mengubah data menjadi JSON
 import os
 from werkzeug.utils import secure_filename
+import secrets
 
 
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'}
 app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 200 MB/etc/nginx/nginx.conf
@@ -46,59 +48,7 @@ def close_connection(exception):
 # Route utama (untuk menampilkan grafik di halaman web)
 @app.route('/')
 def index():
-    query = """
-        SELECT bulan, status, COUNT(*) AS jumlah
-        FROM murid
-        GROUP BY bulan, status
-        ORDER BY CASE
-            WHEN bulan = 'Jan' THEN 1
-            WHEN bulan = 'Feb' THEN 2
-            WHEN bulan = 'Mar' THEN 3
-            WHEN bulan = 'Apr' THEN 4
-            WHEN bulan = 'Mei' THEN 5
-            WHEN bulan = 'Jun' THEN 6
-            WHEN bulan = 'Jul' THEN 7
-            WHEN bulan = 'Agu' THEN 8
-            WHEN bulan = 'Sep' THEN 9
-            WHEN bulan = 'Okt' THEN 10
-            WHEN bulan = 'Nov' THEN 11
-            WHEN bulan = 'Des' THEN 12
-        END
-    """
-    data = query_db(query)
-    
-    # Debugging: Print raw data before processing
-    print("Raw Data:", data)
-
-    # Inisialisasi data bulanan untuk grafik
-    chart1_data = {month: {"Net Profit": 0, "Revenue": 0} for month in ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]}
-
-    # Memproses hasil query
-    for row in data:
-        bulan = row['bulan']
-        status = row['status']
-        jumlah = row['jumlah']
-        if status == 'net_profit':
-            chart1_data[bulan]["Net Profit"] += jumlah
-        elif status == 'revenue':
-            chart1_data[bulan]["Revenue"] += jumlah
-
-    # Debugging: Check processed chart1 data
-    print("Processed Chart 1 Data:", chart1_data)
-
-    # Sort months manually to ensure correct order
-    month_order = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
-    sorted_chart1_data = {month: chart1_data[month] for month in month_order}
-
-    # Debugging: Check sorted chart data
-    print("Sorted Chart 1 Data:", sorted_chart1_data)
-
-    # Mengirim data ke template (untuk tampilan web)
-    return render_template(
-        'beranda.html',
-        chart1_data=json.dumps(sorted_chart1_data)  # Convert ke JSON
-    )
-
+    return render_template('landingPage/dashboard.html')
 # API untuk mendapatkan data chart1 (jumlah murid per bulan)
 @app.route('/api/chart1', methods=['GET'])
 def get_chart1_data():
@@ -539,7 +489,7 @@ def edit_media(id):
         conn.commit()
         conn.close()
 
-        return jsonify({'message': 'Media updated successfully'})
+        return redirect(url_for('sosial_dashboard'))
 
     return jsonify({'error': 'File type not allowed'}), 400
 @app.route('/api/media/<int:id>', methods=['DELETE'])
@@ -550,7 +500,7 @@ def delete_media(id):
     conn.commit()
     conn.close()
     
-    return jsonify({'message': 'Media deleted successfully'})
+    return redirect(url_for('sosial_dashboard'))
 
 @app.route('/api/galery', methods=['POST'])
 def add_to_galery():
@@ -602,7 +552,7 @@ def add_to_galery():
         conn.commit()
         conn.close()
 
-        return jsonify({"message": "File uploaded and data saved", "file_url": file_url}), 201
+        return redirect(url_for('general_dashboard'))
     else:
         return jsonify({"error": "Invalid file type"}), 400
 
@@ -610,7 +560,30 @@ def add_to_galery():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('login.html')
 
+
+@app.route('/loginproses', methods=['POST'])
+def loginproses():
+    try:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            conn = get_db()
+            guru = conn.execute('SELECT * FROM guru WHERE nama = ? AND password = ?', (username, password)).fetchone()
+            conn.close()
+
+            if guru:
+                session['logged_in'] = True
+                session['username'] = guru['nama']
+                return redirect(url_for('admin_dashboard'))
+            else:
+                return render_template('login.html', error='Invalid username or password')
+    except Exception as e:
+        return str(e)  # Menampilkan kesalahan jika ada
 
 if __name__ == '__main__':
     app.run(debug=True)

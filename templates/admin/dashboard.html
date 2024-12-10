@@ -58,7 +58,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href=""
+                href="{{ url_for('admin_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -80,14 +80,11 @@
             <!-- end -->
             <div class="h-px my-2 bg-gray-200"></div>
             <!-- General -->
-            <a
-                class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="{{ url_for('general_dashboard') }}"
-              >
             <div
-              class="flex text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
+            class="flex text-gray-500 items-center transition duration-300 rounded-lg hover:bg-[#7443E1] hover:text-white border-none"
             >
-              
+            <a class="block py-2.5 px-2 rounded flex items-center gap-2" href="{{ url_for('general_dashboard') }}">
+            
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -104,9 +101,9 @@
                 </svg>
 
                 General
-              
+                
+              </a>
             </div>
-          </a>
             <!-- end -->
             <div class="h-px my-2 bg-gray-200"></div>
             <!-- chart1 -->
@@ -115,7 +112,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart1.html"
+                href="{{ url_for('chart1_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

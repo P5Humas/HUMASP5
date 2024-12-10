@@ -56,7 +56,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="dashboard.html"
+                href="{{ url_for('admin_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="general.html"
+                href="{{ url_for('general_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +111,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart1.html"
+                href="{{ url_for('chart1_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@
             >
               <a
                 class="block py-2.5 px-2 rounded flex items-center gap-2"
-                href="chart2.html"
+                href="{{ url_for('chart2_dashboard') }}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -291,168 +291,122 @@
             </div>
 
             <!-- Form -->
-            <form
-              id="mediaForm"
-              class="mt-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-            >
-              <div class="mb-4">
-                <label
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                  for="mediaType"
-                >
-                  Media Type
-                </label>
-                <select
-                  id="mediaType"
-                  class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                >
-                  <option value="photo">Foto</option>
-                  <option value="video">Video</option>
-                </select>
-              </div>
-
-              <div id="photoInputs">
-                <div class="mb-4">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="photoUpload"
-                  >
-                    Upload Foto
-                  </label>
-                  <input
-                    type="file"
-                    id="photoUpload"
-                    accept="image/*"
-                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                  />
-                </div>
-                <div id="photoPreviewContainer" class="mb-4 hidden">
-                  <img
-                    id="photoPreview"
-                    class="max-w-xs rounded-lg shadow-md"
-                    alt="Photo Preview"
-                  />
-                </div>
-              </div>
-
-              <div id="videoInputs" class="hidden">
-                <div class="mb-4">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="thumbnailUpload"
-                  >
-                    Upload Thumbnail
-                  </label>
-                  <input
-                    type="file"
-                    id="thumbnailUpload"
-                    accept="image/*"
-                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                  />
-                </div>
-                <div id="thumbnailPreviewContainer" class="mb-4 hidden">
-                  <img
-                    id="thumbnailPreview"
-                    class="max-w-xs rounded-lg shadow-md"
-                    alt="Thumbnail Preview"
-                  />
-                </div>
-                <div class="mb-4">
-                  <label
-                    class="block text-gray-700 text-sm font-bold mb-2"
-                    for="videoUpload"
-                  >
-                    Upload Video
-                  </label>
-                  <input
-                    type="file"
-                    id="videoUpload"
-                    accept="video/*"
-                    class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
-                  />
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between">
-                <button
-                  type="submit"
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-                >
-                  Kirim
-                </button>
-              </div>
-            </form>
+           
           </div>
         </main>
         </div>
         </div>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const filterButtons = document.querySelectorAll('button[id^="filter"]');
-      
-      filterButtons.forEach(button => {
-          button.addEventListener('click', function() {
-              const filterType = this.id.replace('filter', '').toLowerCase();
-              fetchMedia(filterType);  // Panggil fetchMedia dengan tipe filter
-          });
-      });
-  
-      // Fungsi untuk fetch media berdasarkan filter
-      function fetchMedia(type) {
-          let url = '/api/media';  // URL default
-          
-          if (type && type !== 'all') {
-              // Jika filter bukan 'all', tambahkan query string berdasarkan tipe
-              url += `?type=${type}`;
-          }
-  
-          console.log('Fetching data from:', url); // Debugging URL
-  
-          fetch(url)
-              .then(response => response.json())
-              .then(data => {
-                  updateTable(data);  // Memperbarui tabel dengan data yang diterima
-              })
-              .catch(error => console.error('Error fetching media:', error));
-      }
-  
-      // Fungsi untuk memperbarui tabel dengan media yang diambil
-      function updateTable(data) {
-          const tableBody = document.getElementById('mediaTableBody');
-          tableBody.innerHTML = '';  // Menghapus data lama sebelum menambahkan data baru
-  
-          data.forEach(media => {
-              const row = document.createElement('tr');
-              
-              // Menentukan elemen media (foto atau video)
-              let mediaElement = '';
-  
-              if (media.category === 'video' || media.url.endsWith('.mp4') || media.url.endsWith('.avi')) {
-                  mediaElement = `
-                      <video width="320" height="240" controls>
-                          <source src="${media.url}" type="video/mp4">
-                          Your browser does not support the video tag.
-                      </video>`;
-              } else if (media.category === 'foto' || media.url.endsWith('.jpg') || media.url.endsWith('.png')) {
-                  mediaElement = `<img src="${media.url}" alt="${media.category}" class="w-20 h-20 object-cover"/>`;
-              }
-  
-              row.innerHTML = `
-                  <td class="py-3 px-6 text-left">${mediaElement}</td>
-                  <td class="py-3 px-6 text-left">${media.category}</td>
-                  <td class="py-3 px-6 text-center">
-                      <button class="text-blue-500 hover:underline">Edit</button>
-                      <button class="text-red-500 hover:underline">Delete</button>
-                  </td>
-              `;
-              tableBody.appendChild(row);
-          });
-      }
-  
-      // Fetch semua media pada saat halaman dimuat pertama kali
-      fetchMedia('all');
-  });
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('button[id^="filter"]');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filterType = this.id.replace('filter', '').toLowerCase();
+            fetchMedia(filterType);  // Panggil fetchMedia dengan tipe filter
+        });
+    });
 
+    // Fungsi untuk fetch media berdasarkan filter
+    function fetchMedia(type) {
+        let url = '/api/media';  // URL default
+        
+        if (type && type !== 'all') {
+            // Jika filter bukan 'all', tambahkan query string berdasarkan tipe
+            url += `?type=${type}`;
+        }
+
+        console.log('Fetching data from:', url); // Debugging URL
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                updateTable(data);  // Memperbarui tabel dengan data yang diterima
+            })
+            .catch(error => console.error('Error fetching media:', error));
+    }
+
+    // Fungsi untuk memperbarui tabel dengan media yang diambil
+    function updateTable(data) {
+        const tableBody = document.getElementById('mediaTableBody');
+        tableBody.innerHTML = '';  // Menghapus data lama sebelum menambahkan data baru
+
+        data.forEach(media => {
+            const row = document.createElement('tr');
+            
+            // Menentukan elemen media (foto atau video)
+            let mediaElement = '';
+
+            if (media.category === 'video' || media.url.endsWith('.mp4') || media.url.endsWith('.avi')) {
+                mediaElement = `
+                    <video width="320" height="240" controls>
+                        <source src="../..${media.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>`;
+            } else if (media.category === 'foto' || media.url.endsWith('.jpg') || media.url.endsWith('.png')) {
+                mediaElement = `<img src="../..${media.url}" alt="${media.category}" class="w-20 h-20 object-cover"/>`;
+            }
+
+            row.innerHTML = `
+                <td class="py-3 px-6 text-left">${mediaElement}</td>
+                <td class="py-3 px-6 text-left">${media.category}</td>
+                <td class="py-3 px-6 text-center">
+                    <button class="text-blue-500 hover:underline" onclick="editMedia(${media.id_galery})">Edit</button>
+                    <button class="text-red-500 hover:underline" onclick="deleteMedia(${media.id_galery})">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Fungsi untuk mengedit media
+    window.editMedia = function(id) {
+        const formData = new FormData();
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*,video/*';
+        fileInput.onchange = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                formData.append('file', file);
+                const newCategory = prompt('Enter new category:');
+                if (newCategory) {
+                    formData.append('category', newCategory);
+                    
+                    fetch(`/api/media/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        fetchMedia('all');  // Refresh media table
+                    })
+                    .catch(error => console.error('Error updating media:', error));
+                }
+            }
+        };
+        fileInput.click();
+    }
+
+    // Fungsi untuk menghapus media
+    window.deleteMedia = function(id) {
+        if (confirm('Are you sure you want to delete this media?')) {
+            fetch(`/api/media/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                fetchMedia('all');  // Refresh media table
+            })
+            .catch(error => console.error('Error deleting media:', error));
+        }
+    }
+
+    // Fetch semua media pada saat halaman dimuat pertama kali
+    fetchMedia('all');
+});
 </script>  
     <script>
       new Vue({ el: "#app", data: { sidebarOpen: false } });

@@ -127,21 +127,11 @@
           </div>
           <div class="w-full md:w-1/4 bg-white p-0 rounded-lg shadow-md overflow-hidden">
             <div id="slideshow" class="w-full h-full relative">
-              <!-- Add your images and videos here -->
-              <img src="../static/content/images/testing.png" alt="Deskripsi Gambar"
-                class="slide w-full h-full absolute inset-0 transition-opacity duration-1000">
-              <img src="../static/content/images/testing2.png" alt="Deskripsi Gambar 2"
-                class="slide w-full h-full absolute inset-0 transition-opacity duration-1000">
-              <video class="slide w-full h-full absolute inset-0 transition-opacity duration-1000" muted>
-                <source src="../static/content/video/testing.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-              <video class="slide w-full h-full absolute inset-0 transition-opacity duration-1000" muted>
-                <source src="../static/content/video/testing.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
+              <!-- Konten slideshow akan dimasukkan di sini oleh JavaScript -->
             </div>
           </div>
+        
+          
         </div>
         <section class="py-8 bg-white mt-12 rounded-lg shadow-md">
           <div class="container mx-auto px-4">
@@ -333,31 +323,64 @@
       })
       .catch(error => console.error('Error:', error));
   </script>
-  <script src="../../static/js/dashboard.js"></script>
+  
   <script>
-    let slideIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const displayDuration = 5000; // Duration in milliseconds
+    document.addEventListener('DOMContentLoaded', (event) => {
+      fetch('/api/gallery')
+        .then(response => response.json())
+        .then(data => {
+          const slideshow = document.getElementById('slideshow');
 
-    function showSlides() {
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].classList.remove('show');
-      }
-      slideIndex++;
-      if (slideIndex > slides.length) { slideIndex = 1; }
+          data.forEach(item => {
+            if (item.category === 'foto') {
+              const img = document.createElement('img');
+              img.src = `../..${item.url}`;
+              img.alt = 'Deskripsi Gambar';
+              img.classList.add('slide', 'w-full', 'h-full', 'absolute', 'inset-0');
+              slideshow.appendChild(img);
+            } else if (item.category === 'video') {
+              const video = document.createElement('video');
+              video.classList.add('slide', 'w-full', 'h-full', 'absolute', 'inset-0');
+              video.muted = true;
 
-      slides[slideIndex - 1].classList.add('show');
+              const source = document.createElement('source');
+              source.src = `../..${item.url}`;
+              source.type = 'video/mp4';
+              video.appendChild(source);
 
-      if (slides[slideIndex - 1].tagName.toLowerCase() === 'video') {
-        slides[slideIndex - 1].play();
-      }
+              slideshow.appendChild(video);
+            }
+          });
 
-      setTimeout(showSlides, displayDuration); // Change image/video every `displayDuration` milliseconds
-    }
+          const slides = document.querySelectorAll('.slide');
+          let slideIndex = 0;
+          const displayDuration = 5000; // Duration in milliseconds
 
-    document.addEventListener('DOMContentLoaded', showSlides);
+          function showSlides() {
+            for (let i = 0; i < slides.length; i++) {
+              slides[i].classList.remove('show');
+              if (slides[i].tagName.toLowerCase() === 'video') {
+                slides[i].pause();
+                slides[i].currentTime = 0;
+              }
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+
+            slides[slideIndex - 1].classList.add('show');
+
+            if (slides[slideIndex - 1].tagName.toLowerCase() === 'video') {
+              slides[slideIndex - 1].play();
+            }
+
+            setTimeout(showSlides, displayDuration); // Change image/video every `displayDuration` milliseconds
+          }
+
+          showSlides();
+        })
+        .catch(error => console.error('Error fetching gallery data:', error));
+    });
   </script>
-
 </body>
 
 </html>

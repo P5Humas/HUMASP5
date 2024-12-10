@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, g, jsonify, request, send_from_directory
+from flask import Flask, render_template, g, jsonify, request, send_from_directory, redirect, url_for
 import json  # Untuk mengubah data menjadi JSON
 import os
 from werkzeug.utils import secure_filename
@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'}
+app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 200 MB/etc/nginx/nginx.conf
 
 
 DATABASE = 'humas.db'
@@ -246,9 +247,6 @@ def sosial():
 @app.route('/admin/dashboard')
 def admin_dashboard():
     return render_template('admin/dashboard.html')
-@app.route('/landingPage/dashboard')
-def landing_dashboard():
-    return render_template('landingPage/dashboard.html')
 @app.route('/admin/general')
 def general_dashboard():
     return render_template('admin/general.html')
@@ -258,6 +256,44 @@ def sosial_dashboard():
 @app.route('/admin/chart2')
 def chart2_dashboard():
     return render_template('admin/chart2.html')
+
+@app.route('/admin/chart1')
+def chart1_dashboard():
+    return render_template('admin/chart1.html')
+
+@app.route('/landingPage/dashboard')
+def landing_dashboard():
+    return render_template('landingPage/dashboard.html')
+@app.route('/gallery')
+def gallery():
+    # Ambil data dari tabel 'galery'
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM galery')
+    gallery_items = cursor.fetchall()  # Ambil semua data
+    conn.close()
+
+    # Kirim data ke template
+    return render_template('landingPage/dashboard.html', gallery_items=gallery_items)
+@app.route('/api/gallery', methods=['GET'])
+def api_gallery():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM galery')
+    gallery_items = cursor.fetchall()
+    conn.close()
+
+    # Ubah data ke format yang sesuai untuk JSON
+    gallery_list = []
+    for item in gallery_items:
+        gallery_list.append({
+            'id_galery': item['id_galery'],
+            'url': item['url'],
+            'category': item['category']
+        })
+
+    return jsonify(gallery_list)
+
 @app.route('/update', methods=['POST'])
 def update_jumlah():
     # Ambil data dari request
@@ -347,7 +383,174 @@ def get_media():
 
     # Mengembalikan hasil sebagai JSON
     return jsonify([dict(row) for row in media])
+@app.route('/delete', methods=['POST'])
+def delete_data():
+    data = request.form
+    category = data.get('category')
+    status = data.get('status')
+    bulan = data.get('bulan')
 
+    conn = get_db()
+    cursor = conn.cursor()
+
+    if category == 'jumlah_siswa':
+        cursor.execute('DELETE FROM murid WHERE status = ? AND bulan = ?', (status, bulan))
+    elif category == 'jumlah_alumni':
+        cursor.execute('DELETE FROM alumni WHERE status = ? AND bulan = ?', (status, bulan))
+    else:
+        return jsonify({'error': 'Kategori tidak valid'}), 400
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Data berhasil dihapus'})
+@app.route('/updatemurid', methods=['POST'])
+def update_data():
+    data = request.form
+    pkl_status = data.get('pklStatus')  # Status PKL yang baru
+    pkl_month = data.get('pklMonth')  # Bulan yang dipilih
+    pkl_count = data.get('pklCount')  # Jumlah PKL yang baru
+
+    # Validasi input
+    if not pkl_status or not pkl_month or not pkl_count:
+        return jsonify({'error': 'Semua field harus diisi'}), 400
+
+    # Membuka koneksi ke database
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Mengupdate data di tabel murid berdasarkan bulan dan status
+    if pkl_status == 'pkl':
+        cursor.execute('''
+            UPDATE murid
+            SET  jumlah = ?
+            WHERE bulan = ? AND status = 'pkl'
+        ''', (pkl_count, pkl_month))
+    elif pkl_status == 'belum-pkl':
+        cursor.execute('''
+            UPDATE murid
+            SET jumlah = ?
+            WHERE bulan = ? AND status = 'belum-pkl'
+        ''', (pkl_count, pkl_month))
+    else:
+        return jsonify({'error': 'Status tidak valid'}), 400
+
+    # Commit perubahan dan menutup koneksi
+    conn.commit()
+    conn.close()
+
+    # Mengembalikan respon sukses
+    return redirect(url_for('chart1_dashboard'))
+
+@app.route('/updatealumni', methods=['POST'])
+def update_data_alumni():
+    data = request.form
+    alumni_status = data.get('Status')  # Status PKL yang baru
+    alumni_month = data.get('YearCount')  # Bulan yang dipilih
+    alumni_count = data.get('Jumlah')  # Jumlah PKL yang baru
+
+    # Validasi input
+    if not alumni_status or not alumni_month or not alumni_count:
+        return jsonify({'error': 'Semua field harus diisi'}), 400
+
+    # Membuka koneksi ke database
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # Mengupdate data di tabel murid berdasarkan bulan dan status
+    if alumni_status == 'kerja':
+        cursor.execute('''
+            UPDATE alumni
+            SET  jumlah = ?
+            WHERE bulan = ? AND status = 'kerja'
+        ''', (alumni_count, alumni_month))
+    elif alumni_status == 'belum-kerja':
+        cursor.execute('''
+            UPDATE alumni
+            SET jumlah = ?
+            WHERE bulan = ? AND status = 'belum-kerja'
+        ''', (alumni_count, alumni_month))
+    else:
+        return jsonify({'error': 'Status tidak valid'}), 400
+
+    # Commit perubahan dan menutup koneksi
+    conn.commit()
+    conn.close()
+
+    # Mengembalikan respon sukses
+    return redirect(url_for('chart2_dashboard'))
+
+@app.route('/insertlowongan', methods=['POST'])
+def insert_lowongan():
+    if request.method == 'POST':
+        pkl_month = request.form['pklMonth']
+        student_count = request.form['studentCount']
+
+        # Simpan data ke database
+        conn = get_db()
+        conn.execute(
+            'INSERT INTO lowongan (bulan, jumlah_lowongan) VALUES (?, ?)',
+            (pkl_month, student_count)
+        )
+        conn.commit()
+        conn.close()
+
+        
+
+        return redirect(url_for('chart2_dashboard'))
+
+@app.route('/updatelowongan', methods=['POST'])
+def update_lowongan():
+    if request.method == 'POST':
+        pkl_month = request.form['pklMonth']
+        student_count = request.form['studentCount']
+
+        # Update data di database
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute(
+            'UPDATE lowongan SET jumlah_lowongan = ? WHERE bulan = ?',
+            (student_count, pkl_month)
+        )
+        conn.commit()
+        conn.close()
+
+        # Arahkan pengguna ke halaman chart2_dashboard setelah update
+        return redirect(url_for('chart2_dashboard'))
+@app.route('/api/media/<int:id>', methods=['PUT'])
+def edit_media(id):
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = f'/uploads/{filename}'
+        
+        category = request.form.get('category')
+
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE galery SET url = ?, category = ? WHERE id_galery = ?', (file_url, category, id))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Media updated successfully'})
+
+    return jsonify({'error': 'File type not allowed'}), 400
+@app.route('/api/media/<int:id>', methods=['DELETE'])
+def delete_media(id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM galery WHERE id_galery = ?', (id,))
+    conn.commit()
+    conn.close()
+    
+    return jsonify({'message': 'Media deleted successfully'})
 
 @app.route('/api/galery', methods=['POST'])
 def add_to_galery():
@@ -406,6 +609,8 @@ def add_to_galery():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,4 @@
+server {
+    client_max_body_size 100M;  # Adjust the size as needed
+    ...
+}
